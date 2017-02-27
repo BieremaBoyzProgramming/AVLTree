@@ -470,142 +470,146 @@ AVL.prototype.resetWeight = function(tree)
 
 AVL.prototype.doubleRotateRight = function(tree)
 {
-	this.cmd("SetText", 0, "Double Rotate Right");
-	var A = tree.left;
-	var B = tree.left.right;
-	var C = tree;
-	var t1 = A.left;
-	var t2 = B.left;
-	var t3 = B.right;
-	var t4 = C.right;
-
-	this.cmd("Disconnect", C.graphicID, A.graphicID);
-	this.cmd("Disconnect", A.graphicID, B.graphicID);
-	this.cmd("Connect", C.graphicID, A.graphicID, AVL.HIGHLIGHT_LINK_COLOR);
-	this.cmd("Connect", A.graphicID, B.graphicID, AVL.HIGHLIGHT_LINK_COLOR);
-	this.cmd("Step");
-
-	if (t2 != null)
-	{
-		this.cmd("Disconnect",B.graphicID, t2.graphicID);
-		t2.parent = A;
-		A.right = t2;
-		this.cmd("Connect", A.graphicID, t2.graphicID, AVL.LINK_COLOR);
-	}
-	if (t3 != null)
-	{
-		this.cmd("Disconnect",B.graphicID, t3.graphicID);
-		t3.parent = C;
-		C.left = t2;
-		this.cmd("Connect", C.graphicID, t3.graphicID, AVL.LINK_COLOR);
-	}
-	if (C.parent == null)
-	{
-		B.parent = null;
-		this.treeRoot = B;
-	}
-	else
-	{
-		this.cmd("Disconnect",C.parent.graphicID, C.graphicID);
-		this.cmd("Connect",C.parent.graphicID, B.graphicID, AVL.LINK_COLOR);
-		if (C.isLeftChild())
-		{
-			C.parent.left = B
-		}
-		else
-		{
-			C.parent.right = B;
-		}
-		B.parent = C.parent;
-		C.parent = B;
-	}
-	this.cmd("Disconnect", C.graphicID, A.graphicID);
-	this.cmd("Disconnect", A.graphicID, B.graphicID);
-	this.cmd("Connect", B.graphicID, A.graphicID, AVL.LINK_COLOR);
-	this.cmd("Connect", B.graphicID, C.graphicID, AVL.LINK_COLOR);
-	B.left = A;
-	A.parent = B;
-	B.right=C;
-	C.parent=B;
-	A.right=t2;
-	C.left = t3;
-	this. resetHeight(A);
-	this. resetHeight(C);
-	this. resetHeight(B);
-
-	this.resizeTree();
+	this.singleRotateLeft(tree.left)
+	this.singleRotateRight(tree)
+	// this.cmd("SetText", 0, "Double Rotate Right");
+	// var A = tree.left;
+	// var B = tree.left.right;
+	// var C = tree;
+	// var t1 = A.left;
+	// var t2 = B.left;
+	// var t3 = B.right;
+	// var t4 = C.right;
+    //
+	// this.cmd("Disconnect", C.graphicID, A.graphicID);
+	// this.cmd("Disconnect", A.graphicID, B.graphicID);
+	// this.cmd("Connect", C.graphicID, A.graphicID, AVL.HIGHLIGHT_LINK_COLOR);
+	// this.cmd("Connect", A.graphicID, B.graphicID, AVL.HIGHLIGHT_LINK_COLOR);
+	// this.cmd("Step");
+    //
+	// if (t2 != null)
+	// {
+	// 	this.cmd("Disconnect",B.graphicID, t2.graphicID);
+	// 	t2.parent = A;
+	// 	A.right = t2;
+	// 	this.cmd("Connect", A.graphicID, t2.graphicID, AVL.LINK_COLOR);
+	// }
+	// if (t3 != null)
+	// {
+	// 	this.cmd("Disconnect",B.graphicID, t3.graphicID);
+	// 	t3.parent = C;
+	// 	C.left = t2;
+	// 	this.cmd("Connect", C.graphicID, t3.graphicID, AVL.LINK_COLOR);
+	// }
+	// if (C.parent == null)
+	// {
+	// 	B.parent = null;
+	// 	this.treeRoot = B;
+	// }
+	// else
+	// {
+	// 	this.cmd("Disconnect",C.parent.graphicID, C.graphicID);
+	// 	this.cmd("Connect",C.parent.graphicID, B.graphicID, AVL.LINK_COLOR);
+	// 	if (C.isLeftChild())
+	// 	{
+	// 		C.parent.left = B
+	// 	}
+	// 	else
+	// 	{
+	// 		C.parent.right = B;
+	// 	}
+	// 	B.parent = C.parent;
+	// 	C.parent = B;
+	// }
+	// this.cmd("Disconnect", C.graphicID, A.graphicID);
+	// this.cmd("Disconnect", A.graphicID, B.graphicID);
+	// this.cmd("Connect", B.graphicID, A.graphicID, AVL.LINK_COLOR);
+	// this.cmd("Connect", B.graphicID, C.graphicID, AVL.LINK_COLOR);
+	// B.left = A;
+	// A.parent = B;
+	// B.right=C;
+	// C.parent=B;
+	// A.right=t2;
+	// C.left = t3;
+	// this. resetHeight(A);
+	// this. resetHeight(C);
+	// this. resetHeight(B);
+    //
+	// this.resizeTree();
 
 
 }
 
 AVL.prototype.doubleRotateLeft = function(tree)
 {
-	this.cmd("SetText", 0, "Double Rotate Left");
-	var A = tree;
-	var B = tree.right.left;
-	var C = tree.right;
-	var t1 = A.left;
-	var t2 = B.left;
-	var t3 = B.right;
-	var t4 = C.right;
-
-	this.cmd("Disconnect", A.graphicID, C.graphicID);
-	this.cmd("Disconnect", C.graphicID, B.graphicID);
-	this.cmd("Connect", A.graphicID, C.graphicID, AVL.HIGHLIGHT_LINK_COLOR);
-	this.cmd("Connect", C.graphicID, B.graphicID, AVL.HIGHLIGHT_LINK_COLOR);
-	this.cmd("Step");
-
-	if (t2 != null)
-	{
-		this.cmd("Disconnect",B.graphicID, t2.graphicID);
-		t2.parent = A;
-		A.right = t2;
-		this.cmd("Connect", A.graphicID, t2.graphicID, AVL.LINK_COLOR);
-	}
-	if (t3 != null)
-	{
-		this.cmd("Disconnect",B.graphicID, t3.graphicID);
-		t3.parent = C;
-		C.left = t2;
-		this.cmd("Connect", C.graphicID, t3.graphicID, AVL.LINK_COLOR);
-	}
-
-
-	if (A.parent == null)
-	{
-		B.parent = null;
-		this.treeRoot = B;
-	}
-	else
-	{
-		this.cmd("Disconnect",A.parent.graphicID, A.graphicID);
-		this.cmd("Connect",A.parent.graphicID, B.graphicID, AVL.LINK_COLOR);
-		if (A.isLeftChild())
-		{
-			A.parent.left = B
-		}
-		else
-		{
-			A.parent.right = B;
-		}
-		B.parent = A.parent;
-		A.parent = B;
-	}
-	this.cmd("Disconnect", A.graphicID, C.graphicID);
-	this.cmd("Disconnect", C.graphicID, B.graphicID);
-	this.cmd("Connect", B.graphicID, A.graphicID, AVL.LINK_COLOR);
-	this.cmd("Connect", B.graphicID, C.graphicID, AVL.LINK_COLOR);
-	B.left = A;
-	A.parent = B;
-	B.right=C;
-	C.parent=B;
-	A.right=t2;
-	C.left = t3;
-	this. resetHeight(A);
-	this. resetHeight(C);
-	this. resetHeight(B);
-
-	this.resizeTree();
+    this.singleRotateRight(tree.right)
+    this.singleRotateLeft(tree)
+	// this.cmd("SetText", 0, "Double Rotate Left");
+	// var A = tree;
+	// var B = tree.right.left;
+	// var C = tree.right;
+	// var t1 = A.left;
+	// var t2 = B.left;
+	// var t3 = B.right;
+	// var t4 = C.right;
+    //
+	// this.cmd("Disconnect", A.graphicID, C.graphicID);
+	// this.cmd("Disconnect", C.graphicID, B.graphicID);
+	// this.cmd("Connect", A.graphicID, C.graphicID, AVL.HIGHLIGHT_LINK_COLOR);
+	// this.cmd("Connect", C.graphicID, B.graphicID, AVL.HIGHLIGHT_LINK_COLOR);
+	// this.cmd("Step");
+    //
+	// if (t2 != null)
+	// {
+	// 	this.cmd("Disconnect",B.graphicID, t2.graphicID);
+	// 	t2.parent = A;
+	// 	A.right = t2;
+	// 	this.cmd("Connect", A.graphicID, t2.graphicID, AVL.LINK_COLOR);
+	// }
+	// if (t3 != null)
+	// {
+	// 	this.cmd("Disconnect",B.graphicID, t3.graphicID);
+	// 	t3.parent = C;
+	// 	C.left = t2;
+	// 	this.cmd("Connect", C.graphicID, t3.graphicID, AVL.LINK_COLOR);
+	// }
+    //
+    //
+	// if (A.parent == null)
+	// {
+	// 	B.parent = null;
+	// 	this.treeRoot = B;
+	// }
+	// else
+	// {
+	// 	this.cmd("Disconnect",A.parent.graphicID, A.graphicID);
+	// 	this.cmd("Connect",A.parent.graphicID, B.graphicID, AVL.LINK_COLOR);
+	// 	if (A.isLeftChild())
+	// 	{
+	// 		A.parent.left = B
+	// 	}
+	// 	else
+	// 	{
+	// 		A.parent.right = B;
+	// 	}
+	// 	B.parent = A.parent;
+	// 	A.parent = B;
+	// }
+	// this.cmd("Disconnect", A.graphicID, C.graphicID);
+	// this.cmd("Disconnect", C.graphicID, B.graphicID);
+	// this.cmd("Connect", B.graphicID, A.graphicID, AVL.LINK_COLOR);
+	// this.cmd("Connect", B.graphicID, C.graphicID, AVL.LINK_COLOR);
+	// B.left = A;
+	// A.parent = B;
+	// B.right=C;
+	// C.parent=B;
+	// A.right=t2;
+	// C.left = t3;
+	// this. resetHeight(A);
+	// this. resetHeight(C);
+	// this. resetHeight(B);
+    //
+	// this.resizeTree();
 
 
 }
